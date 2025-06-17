@@ -13,6 +13,7 @@ namespace Calc
         public bool IsNewOp { get; set; }
         public bool IsError { get; set; }
         public bool IsSandwichBtnClk { get; set; }
+        ControlPanel controlPanel;
 
         public Calculator()
         {
@@ -20,6 +21,7 @@ namespace Calc
             DisplayText = "0";
             IsNewOp = true;
             IsError = false;
+            controlPanel = new ControlPanel();
         }
 
         public void DisplayError()
@@ -43,6 +45,10 @@ namespace Calc
             IsNewOp = true;
         }
 
+        public void Work(Command command)
+        {
+            controlPanel.ExecuteCommand(command);
+        }
 
         public void Backspace()
         {
@@ -115,12 +121,53 @@ namespace Calc
 
         public void Undo()
         {
-            
+            controlPanel.Undo();
         }
 
         public void Redo()
         {
-            
+            controlPanel.Redo();
+        }
+
+        public void Calculate(out double firstOperand, out double secondOperand, out string op)
+        {
+            string[] expression = Expression.Split(' ');
+
+            if (!double.TryParse(expression[0], out firstOperand) || !double.TryParse(DisplayText, out secondOperand))
+            {
+                throw new Exception("Invalid number format!");
+            }
+
+            op = expression[1];
+
+            switch (op)
+            {
+                case "+":
+                case "-":
+                case "×":
+                case "÷":
+                    if (op == "÷" && secondOperand == 0)
+                    {
+                        throw new DivideByZeroException();
+                    }
+                    break;
+                case "√":
+                    if (firstOperand < 0)
+                    {
+                        throw new ArgumentException("Cannot calculate square root of negative number");
+                    }
+                    break;
+                case "xⁿ":
+                    break;
+                case "ln":
+                    if (firstOperand <= 0)
+                    {
+                        throw new ArgumentException("Cannot calculate logarithm of non-positive number");
+                    }
+                    break;
+                default:
+                    throw new ArgumentException("Invalid operation");
+            }
         }
     }
 }
