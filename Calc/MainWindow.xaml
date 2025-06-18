@@ -107,7 +107,7 @@
         <Button x:Name="Root" Grid.Row="1" Grid.Column="4" Content="√" Background="#FFF9F9F9" Click="Extended_Click" Visibility="Collapsed"/>
 
         <!--second row-->
-        <Button x:Name="Btn1" Grid.Row="2" Grid.Column="0" Content="1" Click="NumberBtn_Click">
+        <Button x:Name="Btn1" Grid.Row="4" Grid.Column="0" Content="1" Click="NumberBtn_Click">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FFFFFDFD"/>
@@ -115,8 +115,8 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
-        <Button x:Name="Btn2" Grid.Row="2" Grid.Column="1" Content="2" Background="#FFFAFAFA" Click="NumberBtn_Click"/>
-        <Button x:Name="Btn3" Grid.Row="2" Grid.Column="2" Content="3" Background="#FFFAFAFA" Click="NumberBtn_Click"/>
+        <Button x:Name="Btn2" Grid.Row="4" Grid.Column="1" Content="2" Background="#FFFAFAFA" Click="NumberBtn_Click"/>
+        <Button x:Name="Btn3" Grid.Row="4" Grid.Column="2" Content="3" Background="#FFFAFAFA" Click="NumberBtn_Click"/>
         <Button x:Name="MultiplyBtn" Grid.Row="2" Grid.Column="3" Content="×" Background="#FFFAFAFA" Click="Operation_Click"/>
         <Button x:Name="xn" Grid.Row="2" Grid.Column="4" Content="xⁿ" Background="#FFF9F9F9" Click="Extended_Click" Visibility="Collapsed"/>
 
@@ -128,9 +128,9 @@
         <Button x:Name="Ln" Grid.Row="3" Grid.Column="4" Content="ln" Background="#FFF9F9F9" Click="Extended_Click" Visibility="Collapsed"/>
 
         <!--fourth row-->
-        <Button x:Name="Btn7" Grid.Row="4" Grid.Column="0" Content="7" BorderBrush="#FF707070" Background="#FFFDFCFC" Click="NumberBtn_Click"/>
-        <Button x:Name="Btn8" Grid.Row="4" Grid.Column="1" Content="8" BorderBrush="#FF707070" Background="#FFF9F9F9" Click="NumberBtn_Click"/>
-        <Button x:Name="Btn9" Grid.Row="4" Grid.Column="2" Content="9" BorderBrush="#FF707070" Background="#FFFDFCFC" Click="NumberBtn_Click"/>
+        <Button x:Name="Btn7" Grid.Row="2" Grid.Column="0" Content="7" BorderBrush="#FF707070" Background="#FFFDFCFC" Click="NumberBtn_Click"/>
+        <Button x:Name="Btn8" Grid.Row="2" Grid.Column="1" Content="8" BorderBrush="#FF707070" Background="#FFF9F9F9" Click="NumberBtn_Click"/>
+        <Button x:Name="Btn9" Grid.Row="2" Grid.Column="2" Content="9" BorderBrush="#FF707070" Background="#FFFDFCFC" Click="NumberBtn_Click"/>
         <Button x:Name="PlusBtn" Grid.Row="4" Grid.Column="3" Content="+" Background="#FFFDFCFC" Click="Operation_Click"/>
 
         <!--fifth row-->
