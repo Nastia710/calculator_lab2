@@ -50,7 +50,7 @@
         <!--#endregion-->
 
         <!--redo button-->
-        <Button x:Name="RedoBtn" Grid.Row="0" Grid.Column="3"
+        <Button x:Name="RedoBtn" Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2"
             Height="35" Width="70"
             BorderBrush="Transparent" 
             Background="Transparent"
@@ -86,18 +86,18 @@
              FontSize="35"
              Margin="10,10,10,10"
              FlowDirection="LeftToRight"
-             Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" Height="55"/>
+             Text="{Binding CurrentExpressionText}" Height="55"/>
 
         <!--waiting for operation display-->
         <TextBlock Grid.Column="0" Grid.ColumnSpan="5"
                Margin="10,60,10,50"
-               Foreground="Black"
+               Foreground="#FF545454"
                FontSize="25"
                x:Name="waitingDisplay"
                Background="Transparent"
                HorizontalAlignment="Right"
                VerticalAlignment="Bottom"
-               Text="{Binding WaitingText, UpdateSourceTrigger=PropertyChanged}"/>
+               Text="{Binding HistoryDisplayText}"/>
 
         <!--first row-->
         <Button x:Name="Undo" Grid.Row="1" Grid.Column="0" Content="CE" Background="#FFF9F9F9" Click="Undo_Click"/>

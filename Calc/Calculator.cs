@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,165 +10,111 @@ namespace Calc
 {
     public class Calculator
     {
-        public string Expression { get; set; }
-        public string DisplayText { get; set; }
-        public bool IsNewOp { get; set; }
-        public bool IsError { get; set; }
+        public string CurrentExpression { get; private set; } = "";
+        public string HistoryDisplay { get; private set; } = "";
         public bool IsSandwichBtnClk { get; set; }
-        ControlPanel controlPanel;
 
-        public Calculator()
+        public void UpdateState(string newExpression, string newHistory)
         {
-            Expression = "";
-            DisplayText = "0";
-            IsNewOp = true;
-            IsError = false;
-            controlPanel = new ControlPanel();
+            CurrentExpression = newExpression;
+            HistoryDisplay = newHistory;
         }
-
-        public void DisplayError()
-        {
-            IsError = false;
-            Clear();
-        }
-
-        public void ResetError()
-        {
-            Expression = "";
-            DisplayText = "Error";
-            IsNewOp = true;
-            IsError = true;
-        }
-
         public void Clear()
         {
-            Expression = "";
-            DisplayText = "0";
-            IsNewOp = true;
+            CurrentExpression = "";
+            HistoryDisplay = "";
         }
 
-        public void Work(Command command)
+        public string CalculateBasicExpression(string expression)
         {
-            controlPanel.ExecuteCommand(command);
-        }
+            try
+            {
+                string preparedExpression = expression.Replace('×', '*').Replace('÷', '/').Replace('−', '-');
 
-        public void Backspace()
-        {
-            if (IsError)
-            {
-                ResetError();
-                return;
+                var dataTable = new DataTable();
+                var value = dataTable.Compute(preparedExpression, string.Empty);
+
+                return value.ToString();
             }
-            if (DisplayText.Length == 1 || (DisplayText.Length == 2 && DisplayText[0] == '-'))
+            catch (Exception ex)
             {
-                DisplayText = "0";
-                IsNewOp = true;
-            }
-            else
-            {
-                DisplayText = DisplayText.Substring(0, DisplayText.Length - 1);
+                return "Error";
             }
         }
 
-        public void AddNumber(string number)
+        public string CalculateSqrt(string numberStr)
         {
-            if (IsError)
+            try
             {
-                ResetError();
-            }
-            if (IsNewOp)
-            {
-                DisplayText = number;
-                IsNewOp = false;
-            }
-            else
-            {
-                if (DisplayText == "0" && number != ".")
+                if (double.TryParse(numberStr, out double number))
                 {
-                    DisplayText = number;
+                    if (number < 0)
+                    {
+                        return "Error";
+                    }
+                    double result = Math.Sqrt(number);
+                    return result.ToString(CultureInfo.CurrentCulture);
                 }
                 else
                 {
-                    DisplayText += number;
+                    return "Помилка введення!";
                 }
             }
-        }
-
-        public void AddDot()
-        {
-            if (IsError)
+            catch (Exception)
             {
-                ResetError();
-            }
-            if (IsNewOp)
-            {
-                DisplayText = "0.";
-                IsNewOp = false;
-            }
-            else if (!DisplayText.Contains("."))
-            {
-                DisplayText += ".";
+                return "Error";
             }
         }
-
-        public void AddOp(string op)
+        public string CalculateLn(string numberStr)
         {
-            if (IsError)
+            try
             {
-                ResetError();
-            }
-            Expression = $"{DisplayText} {op}";
-            IsNewOp = true;
-        }
-
-        public void Undo()
-        {
-            controlPanel.Undo();
-        }
-
-        public void Redo()
-        {
-            controlPanel.Redo();
-        }
-
-        public void Calculate(out double firstOperand, out double secondOperand, out string op)
-        {
-            string[] expression = Expression.Split(' ');
-
-            if (!double.TryParse(expression[0], out firstOperand) || !double.TryParse(DisplayText, out secondOperand))
-            {
-                throw new Exception("Invalid number format!");
-            }
-
-            op = expression[1];
-
-            switch (op)
-            {
-                case "+":
-                case "-":
-                case "×":
-                case "÷":
-                    if (op == "÷" && secondOperand == 0)
+                if (double.TryParse(numberStr, out double number))
+                {
+                    if (number <= 0)
                     {
-                        throw new DivideByZeroException();
+                        return "Error";
                     }
-                    break;
-                case "√":
-                    if (firstOperand < 0)
-                    {
-                        throw new ArgumentException("Cannot calculate square root of negative number");
-                    }
-                    break;
-                case "xⁿ":
-                    break;
-                case "ln":
-                    if (firstOperand <= 0)
-                    {
-                        throw new ArgumentException("Cannot calculate logarithm of non-positive number");
-                    }
-                    break;
-                default:
-                    throw new ArgumentException("Invalid operation");
+                    double result = Math.Log(number);
+                    return result.ToString(CultureInfo.CurrentCulture);
+                }
+                else
+                {
+                    return "Помилка введення!";
+                }
+            }
+            catch (Exception)
+            {
+                return "Error";
+            }
+        }
+
+        public string CalculatePower(string expression)
+        {
+            try
+            {
+                string cleanedExpression = expression;
+                string[] parts = cleanedExpression.Split('^');
+
+                if (parts.Length != 2)
+                {
+                    return "Невірний формат степеня!";
+                }
+
+                if (double.TryParse(parts[0], out double baseNumber) &&
+                    double.TryParse(parts[1], out double exponent))
+                {
+                    double result = Math.Pow(baseNumber, exponent);
+                    return result.ToString(CultureInfo.CurrentCulture);
+                }
+                else
+                {
+                    return "Помилка введення чисел!";
+                }
+            }
+            catch (Exception)
+            {
+                return "Error";
             }
         }
     }
